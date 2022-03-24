@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 
 import Container from '@mui/material/Container';
@@ -8,7 +8,8 @@ import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-
+const axios = require('axios');
+const Uri = "http://localhost:5000";
 const schema = yup.object({
     firstName: yup
         .string()
@@ -24,23 +25,67 @@ const schema = yup.object({
         .string()
         .required('Note is required'),
   }).required();
-  
+ 
+const initialUser = []
 
 function Home() {
-    const [dataForm, setDataForm] = useState(null);
-
-    const { register, handleSubmit, watch, formState: { errors, isValid } } = useForm({
+    const [list, setList] = useState(initialUser);
+    const { 
+      register, 
+      handleSubmit, 
+      formState: { errors, isValid },
+      reset 
+    } = useForm({
         resolver: yupResolver(schema),
         mode: "onChange"
       });
-
     const onSubmit = (data) => {
-        console.log(errors);
-
-        console.log('data ', data );
-        setDataForm(JSON.stringify(data));
-      };
-
+      resetInputs();
+      // calling Api Insert
+      axios.post(`${Uri}/insert`,data)
+      .then(function (response) {
+        console.log(response);
+        if(response) findUser();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    };
+    function resetInputs(){
+      reset({
+        firstName: '',
+        lastName: '',
+        email: '',
+        note: ''
+      });
+    }
+    function findUser(){
+      axios.get(`${Uri}/user-list`)
+      .then(function (response) {
+        // handle success
+        setList(response.data);
+        console.log('new data ',response);
+        console.log('list ', list)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+    }
+    function removeItem(id){
+      console.log('id ', id);
+      /* axios.post(`${Uri}/delete-user`,{ userId: id })
+      .then(function (response) {
+        console.log(response);
+        if(response) findUser();
+      })
+      .catch(function (error) {
+        console.log(error);
+      }); */
+    }
+    useEffect(() => {
+      findUser();
+    }, []);
     return(
         <Container maxWidth="lg">
             <Grid container spacing={2}>
@@ -109,7 +154,16 @@ function Home() {
                     </Box>
                 </Grid>
                 <Grid item xs={6}>
-                    
+                <ul>
+                  {list.map((item) => (
+                    <li key={item._id}>
+                      <span>{item.firstName}</span> | 
+                      <span>{item.lastName}</span> | 
+                      <span>{item.email}</span> | 
+                      <span>{item.notes}</span>
+                    </li>
+                  ))}
+                </ul>
                 </Grid>
             </Grid>
         </Container>
