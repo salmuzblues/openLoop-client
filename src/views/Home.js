@@ -44,7 +44,6 @@ function Home() {
       // calling Api Insert
       axios.post(`${Uri}/insert`,data)
       .then(function (response) {
-        console.log(response);
         if(response) findUser();
       })
       .catch(function (error) {
@@ -64,28 +63,24 @@ function Home() {
       .then(function (response) {
         // handle success
         setList(response.data);
-        console.log('new data ',response);
-        console.log('list ', list)
       })
       .catch(function (error) {
         // handle error
         console.log(error);
       })
     }
+    useEffect(() => {
+      findUser();
+    }, []);
     function removeItem(id){
-      console.log('id ', id);
-      /* axios.post(`${Uri}/delete-user`,{ userId: id })
+      axios.post(`${Uri}/delete-user`,{ userId: id })
       .then(function (response) {
-        console.log(response);
         if(response) findUser();
       })
       .catch(function (error) {
         console.log(error);
-      }); */
+      });
     }
-    useEffect(() => {
-      findUser();
-    }, []);
     return(
         <Container maxWidth="lg">
             <Grid container spacing={2}>
@@ -160,8 +155,14 @@ function Home() {
                       <span>{item.firstName}</span> | 
                       <span>{item.lastName}</span> | 
                       <span>{item.notes}</span> |
-                      <span>{item.email}</span>  
-                    </li>
+                      <span>{item.email}</span> 
+                      <button 
+                        key={item._id}
+                        onClick={() => removeItem(item._id)}
+                      >
+                        Remove
+                      </button>
+                    </li> 
                   ))}
                 </ul>
                 </Grid>
