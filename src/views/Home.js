@@ -159,8 +159,8 @@ function Home() {
                     <li key={item._id}>
                       <span>{item.firstName}</span> | 
                       <span>{item.lastName}</span> | 
-                      <span>{item.email}</span> | 
-                      <span>{item.notes}</span>
+                      <span>{item.notes}</span> |
+                      <span>{item.email}</span>  
                     </li>
                   ))}
                 </ul>
