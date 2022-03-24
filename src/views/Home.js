@@ -85,6 +85,7 @@ function Home() {
         <Container maxWidth="lg">
             <Grid container spacing={2}>
                 <Grid item xs={6}>
+                    <h1> Add User </h1>
                     <Box pt={4} pb={5}>
                         <Box mb={3}>
                             <TextField 
@@ -149,22 +150,22 @@ function Home() {
                     </Box>
                 </Grid>
                 <Grid item xs={6}>
-                <ul>
-                  {list.map((item) => (
-                    <li key={item._id}>
-                      <span>{item.firstName}</span> | 
-                      <span>{item.lastName}</span> | 
-                      <span>{item.notes}</span> |
-                      <span>{item.email}</span> 
-                      <Button 
-                        key={item._id}
-                        onClick={() => removeItem(item._id)}
-                      >
-                        Remove
-                      </Button>
-                    </li> 
-                  ))}
-                </ul>
+                  <ul>
+                    {list.map((item) => (
+                      <li key={item._id}>
+                        <span>{item.firstName}</span> | 
+                        <span>{item.lastName}</span> | 
+                        <span>{item.notes}</span> |
+                        <span>{item.email}</span> 
+                        <Button 
+                          key={item._id}
+                          onClick={() => removeItem(item._id)}
+                        >
+                          Remove
+                        </Button>
+                      </li> 
+                    ))}
+                  </ul>
                 </Grid>
             </Grid>
         </Container>
