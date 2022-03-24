@@ -156,12 +156,12 @@ function Home() {
                       <span>{item.lastName}</span> | 
                       <span>{item.notes}</span> |
                       <span>{item.email}</span> 
-                      <button 
+                      <Button 
                         key={item._id}
                         onClick={() => removeItem(item._id)}
                       >
                         Remove
-                      </button>
+                      </Button>
                     </li> 
                   ))}
                 </ul>
